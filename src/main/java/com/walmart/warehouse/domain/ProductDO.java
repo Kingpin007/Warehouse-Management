@@ -1,12 +1,15 @@
 package com.walmart.warehouse.domain;
 
+import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 
 import lombok.Getter;
@@ -18,20 +21,27 @@ import lombok.ToString;
 @ToString
 @Entity
 @Table(name = "PRODUCT")
-public class Product extends BaseDO{
+public class ProductDO extends BaseDO{
 	
 	@Column(name = "PRODUCT_KEY")
 	private String productKey;
 
 	@Column(name = "TOTAL_QUANTITY")
-	private double totalQuantity;
+	private Double totalQuantity;
 	
 	@Column(name = "UNIT")
 	private String unit;
 	
 	@Column(name = "TOTAL_QUANTITY_EMPTY")
-	private double totalQuantityEmpty;
+	private Double totalQuantityEmpty;
 	
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "product")
-	private Set<ProductLine> productLines;
+	private Set<ProductLineDO> productLines = new HashSet<ProductLineDO>();
+	
+	@PrePersist
+	public void initilizeKey() {
+		if(this.productKey == null) {
+			productKey = UUID.randomUUID().toString();
+		}
+	}
 }
