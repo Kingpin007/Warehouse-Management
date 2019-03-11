@@ -25,7 +25,7 @@ import lombok.ToString;
 public class ShelfDO extends BaseDO{
 	
 	@Column(name = "SHELF_KEY")
-	private String shelfKey;
+	private String shelfKey = UUID.randomUUID().toString();
 	
 	@Column(name = "LATITUDE")
 	private Double latitude;
@@ -60,6 +60,20 @@ public class ShelfDO extends BaseDO{
 	public void initilizeKey() {
 		if(this.shelfKey == null) {
 			shelfKey = UUID.randomUUID().toString();
+		}
+		if(this.shelfHeightRemaining == null) {
+			shelfHeightRemaining = 10.0;
+		}
+		if(this.shelfWidthRemaining == null) {
+			shelfWidthRemaining = 10.0;
+		}
+		if(this.shelfLengthRemaining == null) {
+			shelfLengthRemaining = 10.0;
+		}
+		for(ProductLineDO productLineDO : productLines) {
+			if(productLineDO.getShelf() == null) {
+				productLineDO.setShelf(this);
+			}
 		}
 	}
 }

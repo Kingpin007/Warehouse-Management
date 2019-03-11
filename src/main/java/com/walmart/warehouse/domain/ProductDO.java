@@ -24,7 +24,7 @@ import lombok.ToString;
 public class ProductDO extends BaseDO{
 	
 	@Column(name = "PRODUCT_KEY")
-	private String productKey;
+	private String productKey = UUID.randomUUID().toString();
 
 	@Column(name = "TOTAL_QUANTITY")
 	private Double totalQuantity;
@@ -42,6 +42,20 @@ public class ProductDO extends BaseDO{
 	public void initilizeKey() {
 		if(this.productKey == null) {
 			productKey = UUID.randomUUID().toString();
+		}
+		if(this.unit == null) {
+			unit = "no";
+		}
+		if(this.totalQuantity == null) {
+			totalQuantity = 0.0;
+		}
+		if(this.totalQuantityEmpty == null) {
+			totalQuantityEmpty = 0.0;
+		}
+		for(ProductLineDO productLineDO : productLines) {
+			if(productLineDO.getProduct() == null) {
+				productLineDO.setProduct(this);
+			}
 		}
 	}
 }

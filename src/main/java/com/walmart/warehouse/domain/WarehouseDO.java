@@ -24,18 +24,28 @@ import lombok.ToString;
 public class WarehouseDO extends BaseDO{
 	
 	@Column(name = "WAREHOUSE_KEY")
-	private String warehouseKey;
+	private String warehouseKey = UUID.randomUUID().toString();
 	
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "warehouse")
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "warehouse")
 	private Set<ShelfGroupDO> shelfGroups = new HashSet<ShelfGroupDO>();
 	
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "warehouse")
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "warehouse")
 	private Set<DropLocationDO> dropLocations = new HashSet<DropLocationDO>();
 	
 	@PrePersist
 	public void initilizeKey() {
 		if(this.warehouseKey == null) {
 			warehouseKey = UUID.randomUUID().toString();
+		}
+		for(ShelfGroupDO shelfGroup : shelfGroups) {
+			if(shelfGroup.getWarehouse() == null) {
+				shelfGroup.setWarehouse(this);
+			}
+		}
+		for(DropLocationDO dropLocation : dropLocations) {
+			if(dropLocation.getWarehouse() == null) {
+				dropLocation.setWarehouse(this);
+			}
 		}
 	}
 }

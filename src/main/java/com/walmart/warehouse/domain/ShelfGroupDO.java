@@ -25,7 +25,7 @@ import lombok.ToString;
 public class ShelfGroupDO extends BaseDO{
 
 	@Column(name = "SHELF_GROUP_KEY")
-	private String shelfGroupKey;
+	private String shelfGroupKey = UUID.randomUUID().toString();
 	
 	@Column(name = "START_LATITUDE")
 	private Double startLatitude;
@@ -42,7 +42,7 @@ public class ShelfGroupDO extends BaseDO{
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "shelfGroup")
 	private Set<ShelfDO> shelves = new HashSet<ShelfDO>(); 
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "WAREHOUSE_KEY")
 	private WarehouseDO warehouse;
 	
@@ -50,6 +50,11 @@ public class ShelfGroupDO extends BaseDO{
 	public void initilizeKey() {
 		if(this.shelfGroupKey == null) {
 			shelfGroupKey = UUID.randomUUID().toString();
+		}
+		for(ShelfDO shelfDO : shelves) {
+			if(shelfDO.getShelfGroup() == null) {
+				shelfDO.setShelfGroup(this);
+			}
 		}
 	}
 }

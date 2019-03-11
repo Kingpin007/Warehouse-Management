@@ -22,7 +22,7 @@ import lombok.ToString;
 public class DropLocationDO extends BaseDO{
 	
 	@Column(name = "DROP_LOCATION_KEY")
-	private String dropLocationKey;
+	private String dropLocationKey = UUID.randomUUID().toString();
 	
 	@Column(name = "LATITUDE")
 	private Double latitude;
@@ -30,7 +30,7 @@ public class DropLocationDO extends BaseDO{
 	@Column(name = "LONGITUDE")
 	private Double longitude;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "WAREHOUSE_KEY")
 	private WarehouseDO warehouse;
 	
