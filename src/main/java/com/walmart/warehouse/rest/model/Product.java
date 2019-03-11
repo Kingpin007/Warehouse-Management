@@ -7,9 +7,8 @@ import lombok.Data;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class Product {
 
-	private String productKey;
-	private Double quantity;
-	private Double length;
-	private Double width;
-	private Double height;
+	private String productName;
+	private Double totalQuantity;
+	private String unit;
+	private Double totalQuantityEmpty;
 }

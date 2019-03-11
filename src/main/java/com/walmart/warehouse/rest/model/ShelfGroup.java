@@ -1,16 +1,23 @@
 package com.walmart.warehouse.rest.model;
 
+import java.util.HashSet;
 import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import lombok.Data;
 
 @Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ShelfGroup {
 
-	public Double startLatitude;
-	public Double startLongitude;
-	public Double endLatitude;
-	public Double endLongitude;
-	public Set<Shelf> shelves = null;
+	private String shelfGroupName;
+	private Double startLatitude;
+	private Double startLongitude;
+	private Double endLatitude;
+	private Double endLongitude;
+	private Double maxQuantity;
+	private Product product;
+	private Set<Shelf> shelves = new HashSet<Shelf>();
 
 }
