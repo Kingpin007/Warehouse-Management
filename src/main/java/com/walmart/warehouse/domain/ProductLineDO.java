@@ -21,7 +21,7 @@ import lombok.ToString;
 public class ProductLineDO extends BaseDO{
 	
 	@Column(name = "PRODUCT_LINE_KEY")
-	private String productLineKey;
+	private String productLineKey = UUID.randomUUID().toString();
 
 	@Column(name = "QUANTITY")
 	private Double quantity;
