@@ -3,6 +3,7 @@ package com.walmart.warehouse.web;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,9 +13,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
 import com.walmart.warehouse.response.model.WarehouseResponseModel;
+import com.walmart.warehouse.rest.model.AddProductModel;
 import com.walmart.warehouse.rest.model.CreateWarehouseModel;
+import com.walmart.warehouse.rest.model.OrderProductModel;
 import com.walmart.warehouse.service.WarehouseService;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
@@ -55,29 +60,29 @@ public class WarehouseController {
 		return warehouseResponseModel;
 	}
 	
-//	@PostMapping("/product/create")
-//	@ResponseBody
-//	@ApiOperation(value = "Create and put product on shelf")
-//	public WarehouseResponseModel createNewProduct(@RequestBody CreateProductModel createProductModel) {
-//		WarehouseResponseModel warehouseResponseModel = new WarehouseResponseModel();
-//		warehouseResponseModel.setPayload(this.warehouseService.insertProduct(createProductModel));
-//		warehouseResponseModel.setStatus(HttpStatus.CREATED);
-//		List<String> messages = new ArrayList<String>();
-//		messages.add("API : Created new product, placed productLines in the shelves listed in payload");
-//		warehouseResponseModel.setMessages(messages);
-//		return warehouseResponseModel;
-//	}
+	@PostMapping("/product/create")
+	@ResponseBody
+	@ApiOperation(value = "Create and put product on shelf")
+	public WarehouseResponseModel createNewProduct(@RequestBody AddProductModel addProductModel) {
+		WarehouseResponseModel warehouseResponseModel = new WarehouseResponseModel();
+		warehouseResponseModel.setPayload(this.warehouseService.insertProduct(addProductModel));
+		warehouseResponseModel.setStatus(HttpStatus.CREATED);
+		List<String> messages = new ArrayList<String>();
+		messages.add("API : Created new product, placed productLines in the shelves listed in payload");
+		warehouseResponseModel.setMessages(messages);
+		return warehouseResponseModel;
+	}
 	
-//	@PostMapping("/product/pickup")
-//	@ResponseBody
-//	@ApiOperation(value = "Generate PickupList for associate (8 products)")
-//	public WarehouseResponseModel createPickupList(@RequestBody OrderProductModel orderProductModel) {
-//		WarehouseResponseModel warehouseResponseModel = new WarehouseResponseModel();
-//		warehouseResponseModel.setPayload(this.warehouseService.pickupProducts(orderProductModel));
-//		warehouseResponseModel.setStatus(HttpStatus.CREATED);
-//		List<String> messages = new ArrayList<String>();
-//		messages.add("API : Created new product, placed productLines in the shelves listed in payload");
-//		warehouseResponseModel.setMessages(messages);
-//		return warehouseResponseModel;
-//	}
+	@PostMapping("/product/pickup")
+	@ResponseBody
+	@ApiOperation(value = "Generate PickupList for associate (8 products)")
+	public WarehouseResponseModel createPickupList(@RequestBody OrderProductModel orderProductModel) {
+		WarehouseResponseModel warehouseResponseModel = new WarehouseResponseModel();
+		warehouseResponseModel.setPayload(this.warehouseService.pickupProducts(orderProductModel));
+		warehouseResponseModel.setStatus(HttpStatus.CREATED);
+		List<String> messages = new ArrayList<String>();
+		messages.add("API : Created new product, placed productLines in the shelves listed in payload");
+		warehouseResponseModel.setMessages(messages);
+		return warehouseResponseModel;
+	}
 }
