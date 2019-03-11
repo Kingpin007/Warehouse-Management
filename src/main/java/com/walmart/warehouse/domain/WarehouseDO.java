@@ -26,6 +26,9 @@ public class WarehouseDO extends BaseDO{
 	@Column(name = "WAREHOUSE_KEY")
 	private String warehouseKey = UUID.randomUUID().toString();
 	
+	@Column(name = "WAREHOUSE_NAME")
+	private String warehouseName;
+	
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "warehouse")
 	private Set<ShelfGroupDO> shelfGroups = new HashSet<ShelfGroupDO>();
 	

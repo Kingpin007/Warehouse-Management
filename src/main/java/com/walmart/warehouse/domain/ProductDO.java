@@ -1,17 +1,10 @@
 package com.walmart.warehouse.domain;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
-
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -23,11 +16,23 @@ import lombok.ToString;
 @Table(name = "PRODUCT")
 public class ProductDO extends BaseDO{
 	
+	@Column(name = "PRODUCT_NAME")
+	private String productName;
+	
 	@Column(name = "PRODUCT_KEY")
-	private String productKey = UUID.randomUUID().toString();
-
+	private Integer productKey;
+	
 	@Column(name = "TOTAL_QUANTITY")
 	private Double totalQuantity;
+	
+	@Column(name = "LENGTH")
+	private Double length;
+	
+	@Column(name = "WIDTH")
+	private Double width;
+	
+	@Column(name = "HEIGHT")
+	private Double height;
 	
 	@Column(name = "UNIT")
 	private String unit;
@@ -35,27 +40,28 @@ public class ProductDO extends BaseDO{
 	@Column(name = "TOTAL_QUANTITY_EMPTY")
 	private Double totalQuantityEmpty;
 	
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "product")
-	private Set<ProductLineDO> productLines = new HashSet<ProductLineDO>();
+	@OneToOne(mappedBy = "product")
+	private ShelfGroupDO shelfGroup;
 	
 	@PrePersist
 	public void initilizeKey() {
 		if(this.productKey == null) {
-			productKey = UUID.randomUUID().toString();
+			if(productName != null)
+				productKey = productName.hashCode();
+			else
+				productKey = 0;
 		}
 		if(this.unit == null) {
 			unit = "no";
 		}
 		if(this.totalQuantity == null) {
-			totalQuantity = 0.0;
+			totalQuantity = 1.0;
 		}
 		if(this.totalQuantityEmpty == null) {
 			totalQuantityEmpty = 0.0;
 		}
-		for(ProductLineDO productLineDO : productLines) {
-			if(productLineDO.getProduct() == null) {
-				productLineDO.setProduct(this);
-			}
+		if(shelfGroup.getProduct() == null) {
+			shelfGroup.setProduct(this);
 		}
 	}
 }
