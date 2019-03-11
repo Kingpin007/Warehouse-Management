@@ -1,4 +1,4 @@
-package com.walmart.warehouse.model;
+package com.walmart.warehouse.rest.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 

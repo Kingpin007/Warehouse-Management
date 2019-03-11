@@ -26,6 +26,15 @@ public class ProductLineDO extends BaseDO{
 	@Column(name = "QUANTITY")
 	private Double quantity;
 	
+	@Column(name = "LENGTH")
+	private Double length;
+	
+	@Column(name = "WIDTH")
+	private Double width;
+	
+	@Column(name = "HEIGHT")
+	private Double height;
+	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "SHELF_KEY")
 	private ShelfDO shelf;
