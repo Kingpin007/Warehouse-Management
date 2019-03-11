@@ -9,6 +9,5 @@ import com.walmart.warehouse.domain.ProductDO;
 public interface ProductRepository
         extends JpaRepository<ProductDO, UUID>{
 	
-	@Query(value = "SELECT * FROM PRODUCT WHERE PRODUCT_KEY = ?0", nativeQuery = true)
-	public ProductDO findProductDOByProductKey(Integer productKey);
+	public ProductDO findByProductKey(Integer productKey);
 }
