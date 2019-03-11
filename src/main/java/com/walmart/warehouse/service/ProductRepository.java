@@ -10,5 +10,5 @@ public interface ProductRepository
         extends JpaRepository<ProductDO, UUID>{
 	
 	@Query(value = "SELECT * FROM PRODUCT WHERE PRODUCT_KEY = ?0", nativeQuery = true)
-	public ProductDO findProductDOByProductKey(String productKey);
+	public ProductDO findProductDOByProductKey(Integer productKey);
 }

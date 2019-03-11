@@ -25,6 +25,15 @@ public class ProductDO extends BaseDO{
 	@Column(name = "TOTAL_QUANTITY")
 	private Double totalQuantity;
 	
+	@Column(name = "LENGTH")
+	private Double length;
+	
+	@Column(name = "WIDTH")
+	private Double width;
+	
+	@Column(name = "HEIGHT")
+	private Double height;
+	
 	@Column(name = "UNIT")
 	private String unit;
 	

@@ -11,4 +11,7 @@ public class Product {
 	private Double totalQuantity;
 	private String unit;
 	private Double totalQuantityEmpty;
+	private Double length;
+	private Double width;
+	private Double height;
 }
