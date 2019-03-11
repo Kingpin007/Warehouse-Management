@@ -38,7 +38,7 @@ public class WarehouseService {
 
 	public String getProduct() {
 		// TODO Auto-generated method stub
-		return "BULLSHIT FUCKER AGAIN";
+		return "HELLO WORLD";
 	}
 
 	public void saveWarehouse() {
