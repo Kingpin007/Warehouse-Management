@@ -10,5 +10,4 @@ import com.walmart.warehouse.domain.WarehouseDO;
 @Repository
 public interface WarehouseRepository
         extends JpaRepository<WarehouseDO, UUID>{
-	
 }

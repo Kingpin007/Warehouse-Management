@@ -1,10 +1,13 @@
 package com.walmart.warehouse.domain;
 
+import java.util.UUID;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 
 import lombok.Getter;
@@ -22,12 +25,19 @@ public class DropLocationDO extends BaseDO{
 	private String dropLocationKey;
 	
 	@Column(name = "LATITUDE")
-	private double latitude;
+	private Double latitude;
 	
-	@Column(name = "LOGITUDE")
-	private double longitude;
+	@Column(name = "LONGITUDE")
+	private Double longitude;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "WAREHOUSE_KEY")
 	private WarehouseDO warehouse;
+	
+	@PrePersist
+	public void initilizeKey() {
+		if(this.dropLocationKey == null) {
+			dropLocationKey = UUID.randomUUID().toString();
+		}
+	}
 }
