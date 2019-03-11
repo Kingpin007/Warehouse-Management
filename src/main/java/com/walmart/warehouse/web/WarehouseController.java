@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.walmart.warehouse.response.model.WarehouseResponseModel;
 import com.walmart.warehouse.rest.model.AddProductModel;
+import com.walmart.warehouse.rest.model.CreateBoxModel;
 import com.walmart.warehouse.rest.model.CreateWarehouseModel;
 import com.walmart.warehouse.rest.model.OrderProductModel;
 import com.walmart.warehouse.service.WarehouseService;
@@ -81,7 +82,33 @@ public class WarehouseController {
 		warehouseResponseModel.setPayload(this.warehouseService.pickupProducts(orderProductModel));
 		warehouseResponseModel.setStatus(HttpStatus.CREATED);
 		List<String> messages = new ArrayList<String>();
-		messages.add("API : Created new product, placed productLines in the shelves listed in payload");
+		messages.add("API : Created new pickupList, List of shelves to be travelled listed in playload");
+		warehouseResponseModel.setMessages(messages);
+		return warehouseResponseModel;
+	}
+	
+	@PostMapping("/product/pack")
+	@ResponseBody
+	@ApiOperation(value = "Generate packing box list for products")
+	public WarehouseResponseModel createPackingBox(@RequestBody OrderProductModel orderProductModel) {
+		WarehouseResponseModel warehouseResponseModel = new WarehouseResponseModel();
+		warehouseResponseModel.setPayload(this.warehouseService.packupProducts(orderProductModel));
+		warehouseResponseModel.setStatus(HttpStatus.CREATED);
+		List<String> messages = new ArrayList<String>();
+		messages.add("API : Created new pickupList, List of products to be packed per box in payload");
+		warehouseResponseModel.setMessages(messages);
+		return warehouseResponseModel;
+	}
+	
+	@PostMapping("/box/create")
+	@ResponseBody
+	@ApiOperation(value = "Create Boxes")
+	public WarehouseResponseModel createPackingBox(@RequestBody CreateBoxModel createBoxModel) {
+		WarehouseResponseModel warehouseResponseModel = new WarehouseResponseModel();
+		warehouseResponseModel.setPayload(this.warehouseService.createBoxes(createBoxModel.getLength(), createBoxModel.getWidth(), createBoxModel.getHeight(), createBoxModel.getCount()));
+		warehouseResponseModel.setStatus(HttpStatus.CREATED);
+		List<String> messages = new ArrayList<String>();
+		messages.add("API : Created new Boxes, with boxKeys listed in payload");
 		warehouseResponseModel.setMessages(messages);
 		return warehouseResponseModel;
 	}

@@ -2,9 +2,15 @@ package com.walmart.warehouse.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -41,7 +47,13 @@ public class ProductDO extends BaseDO{
 	private Double totalQuantityEmpty;
 	
 	@OneToOne(mappedBy = "product")
+	@JsonIgnore
 	private ShelfGroupDO shelfGroup;
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "BOX_KEY")
+	@JsonIgnore
+	private BoxDO box;
 	
 	@PrePersist
 	public void initilizeKey() {
