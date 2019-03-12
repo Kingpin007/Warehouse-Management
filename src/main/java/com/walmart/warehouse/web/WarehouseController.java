@@ -18,6 +18,7 @@ import com.walmart.warehouse.response.model.WarehouseResponseModel;
 import com.walmart.warehouse.rest.model.AddProductModel;
 import com.walmart.warehouse.rest.model.CreateBoxModel;
 import com.walmart.warehouse.rest.model.CreateWarehouseModel;
+import com.walmart.warehouse.rest.model.GenerateWarehouseModel;
 import com.walmart.warehouse.rest.model.OrderProductModel;
 import com.walmart.warehouse.service.WarehouseService;
 
@@ -112,4 +113,18 @@ public class WarehouseController {
 		warehouseResponseModel.setMessages(messages);
 		return warehouseResponseModel;
 	}
+	
+	@PostMapping("/generate")
+	@ResponseBody
+	@ApiOperation(value = "Generate a test warehouse with products")
+	public WarehouseResponseModel generateWarehouse(@RequestBody GenerateWarehouseModel generateWarehouseModel) {
+		WarehouseResponseModel warehouseResponseModel = new WarehouseResponseModel();
+		warehouseResponseModel.setPayload(this.warehouseService.generateWarehouse(generateWarehouseModel));
+		warehouseResponseModel.setStatus(HttpStatus.CREATED);
+		List<String> messages = new ArrayList<String>();
+		messages.add("API : Created new Boxes, with boxKeys listed in payload");
+		warehouseResponseModel.setMessages(messages);
+		return warehouseResponseModel;
+	}
+	
 }

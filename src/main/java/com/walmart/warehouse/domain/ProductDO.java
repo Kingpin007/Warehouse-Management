@@ -75,5 +75,17 @@ public class ProductDO extends BaseDO{
 		if(shelfGroup.getProduct() == null) {
 			shelfGroup.setProduct(this);
 		}
+		Double d1=length,d2=width,d3=height;
+		length = Math.min(d1, Math.min(d2, d3));
+		height = Math.max(d1, Math.max(d2, d3));
+		if((d1 > d3 && d1 < d2 )||(d1 < d3 && d1 > d2)) {
+			width = d1;
+		}
+		else if((d2 > d3 && d2 < d1)||(d2 < d3 && d2 > d3)) {
+			width = d2;
+		}
+		else {
+			width = d3;
+		}
 	}
 }

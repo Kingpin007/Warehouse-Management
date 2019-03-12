@@ -43,6 +43,16 @@ public class BoxDO extends BaseDO{
 		return length*width*height;
 	}
 	
+	public BoxDO clone() {
+		BoxDO boxDO = new BoxDO();
+		boxDO.setBoxKey(boxKey);
+		boxDO.setHeight(height);
+		boxDO.setWidth(width);
+		boxDO.setLength(length);
+		boxDO.setProducts(products);
+		return boxDO;
+	}
+	
 	@PrePersist
 	public void initializeKey() {
 		if(boxKey == null) {
@@ -52,6 +62,18 @@ public class BoxDO extends BaseDO{
 			if(productDO.getBox() == null) {
 				productDO.setBox(this);
 			}
+		}
+		Double d1=length,d2=width,d3=height;
+		length = Math.min(d1, Math.min(d2, d3));
+		height = Math.max(d1, Math.max(d2, d3));
+		if((d1 > d3 && d1 < d2 )||(d1 < d3 && d1 > d2)) {
+			width = d1;
+		}
+		else if((d2 > d3 && d2 < d1)||(d2 < d3 && d2 > d3)) {
+			width = d2;
+		}
+		else {
+			width = d3;
 		}
 	}
 }
