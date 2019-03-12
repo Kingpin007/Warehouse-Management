@@ -7,7 +7,7 @@ import java.io.*;
 import com.walmart.warehouse.utility.UltilityClass;
 
 import com.walmart.warehouse.domain.ShelfDO;
-class Graph 
+public class Graph 
 { 
     // A class to represent a graph edge 
     static LinkedList<Integer> resultList = new LinkedList<Integer>();
@@ -34,7 +34,7 @@ class Graph
     Edge edge[]; // collection of all edges 
   
     // Creates a graph with V vertices and E edges 
-    Graph(int v, int e) 
+    public Graph(int v, int e) 
     { 
         V = v; 
         E = e; 
@@ -150,9 +150,10 @@ class Graph
     public List<String> calcDistance(Set<ShelfDO> setofShelves)
     {
     	List<ShelfDO> shelves= new ArrayList<ShelfDO>();
+    	
     	for(ShelfDO shelfDO: setofShelves)
     	{
-    		shelves.add(shelfDO);
+			shelves.add(shelfDO);
     	}
     	int startnode;
     	int vertices = setofShelves.size();
@@ -185,6 +186,7 @@ class Graph
     	}
     	int visited[]=new int[vertices];
     	Arrays.fill(visited, 0);
+    	resultList.clear();
     	dfs(adjList,visited,0);
     	List<String> myRouteList = new ArrayList<String>();
     	for(int i=0;i<resultList.size();i++)

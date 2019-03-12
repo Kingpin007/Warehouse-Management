@@ -21,6 +21,7 @@ import com.walmart.warehouse.rest.model.Box;
 import com.walmart.warehouse.rest.model.CreateWarehouseModel;
 import com.walmart.warehouse.rest.model.OrderProductModel;
 import com.walmart.warehouse.rest.model.Product;
+import com.walmart.warehouse.utility.Graph;
 
 import lombok.Data;
 
@@ -99,10 +100,10 @@ public class WarehouseService {
 	}
 	
 
-	public Set<String> pickupProducts(OrderProductModel orderProductModel) {
+	public List<String> pickupProducts(OrderProductModel orderProductModel) {
 		// TODO Auto-generated method stub
 		Set<Product> products = orderProductModel.getProducts();
-		Set<String> finalShelves = new HashSet<>();
+		Set<ShelfDO> finalShelves = new HashSet<>();
 		for(Product product : products) {
 			Integer productKey = product.getProductName().hashCode();
 			ProductDO productDO = this.productRepository.findByProductKey(productKey);
@@ -120,7 +121,7 @@ public class WarehouseService {
 							productDO.setTotalQuantity(productDO.getTotalQuantity()-qtyRemaining);
 							productDO.setTotalQuantityEmpty(productDO.getTotalQuantityEmpty()+qtyRemaining);
 							qtyRemaining = 0.0;
-							finalShelves.add(shelfDO.getShelfName());
+							finalShelves.add(shelfDO);
 							break;
 						}
 						else {
@@ -128,7 +129,7 @@ public class WarehouseService {
 							productDO.setTotalQuantity(productDO.getTotalQuantity() - shelfDO.getProductQuantity());
 							productDO.setTotalQuantityEmpty(productDO.getTotalQuantityEmpty() + shelfDO.getProductQuantity());
 							shelfDO.setProductQuantity(0.0);
-							finalShelves.add(shelfDO.getShelfName());
+							finalShelves.add(shelfDO);
 						}
 					}
 				}
@@ -136,7 +137,11 @@ public class WarehouseService {
 			productDO.getShelfGroup().setShelves(shelves);
 			this.productRepository.save(productDO);
 		}
-		return finalShelves;
+		int vertices = finalShelves.size();
+		int edges = (vertices*(vertices-1))/2;
+		Graph graph = new Graph(vertices, edges);
+		List<String> pathShelves = graph.calcDistance(finalShelves);
+		return pathShelves;
 	}
 
 	public List<BoxDO> packupProducts(OrderProductModel orderProductModel) {
