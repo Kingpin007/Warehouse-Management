@@ -1,9 +1,6 @@
 package com.walmart.warehouse.utility;
 
 import java.util.*;
-import java.lang.*;
-import java.security.PublicKey;
-import java.io.*;
 import com.walmart.warehouse.utility.UltilityClass;
 
 import com.walmart.warehouse.domain.ShelfDO;
@@ -150,30 +147,43 @@ public class Graph
     public List<String> calcDistance(Set<ShelfDO> setofShelves)
     {
     	List<ShelfDO> shelves= new ArrayList<ShelfDO>();
-    	
-    	for(ShelfDO shelfDO: setofShelves)
-    	{
-			shelves.add(shelfDO);
-    	}
-    	int startnode;
     	int vertices = setofShelves.size();
     	int edges = (vertices*(vertices-1))/2,k=0;
+    	Double points[][] = new Double[2][vertices];
+    	for(ShelfDO shelfDO: setofShelves)
+    	{
+    		shelves.add(shelfDO);
+    		System.out.println(shelfDO.getShelfKey());
+    		points[0][k]=(shelfDO.getLongitude()%2==0)?(shelfDO.getLongitude()-1):(shelfDO.getLongitude()+1);
+    		points[1][k++]= shelfDO.getLatitude();
+    	}
+//    	points[0][0]=1.0;
+//		points[1][0]= 10.0;
+//		points[0][1]=4.0;
+//		points[1][1]= 6.0;
+//		points[0][2]=4.0;
+//		points[1][2]= 11.0;
+    	k=0;
     	Graph graph = new Graph(vertices, edges);
     	UltilityClass objectUltilityClass = new UltilityClass();
+    	int distance[][] = new int[vertices][vertices];
+    	distance = objectUltilityClass.getMinimumDistanceMatrix(points);
+//    	for(int i=0;i<3;i++)
+//    	{
+//    		for(int j=0;j<3;j++)
+//    			System.out.print(distance[i][j] +" ");
+//    		System.out.println();
+//    	}
     	for(int i=0;i<vertices-1;i++)
     	{
-    		ShelfDO shelfDO1 = shelves.get(i);
     		for(int j=i+1;j<vertices;j++)
     		{
-    			ShelfDO shelfDO2 = shelves.get(j);
-    			int distance = UltilityClass.
-    								findDistanceBetweenTwoShelves(shelfDO1, shelfDO2).
-    									intValue();
     			graph.edge[k].src=i;
     			graph.edge[k].dest=j;
-    			graph.edge[k++].weight=distance;
+    			graph.edge[k++].weight=distance[i][j];
     		}
     	}
+    	
     	Edge result[];
     	result = graph.KruskalMST();
     	LinkedList<Integer> adjList[] = new LinkedList[vertices];
@@ -188,6 +198,9 @@ public class Graph
     	Arrays.fill(visited, 0);
     	resultList.clear();
     	dfs(adjList,visited,0);
+//    	for(int i=0;i<resultList.size();i++)
+//    		System.out.print(resultList.get(i)+" ");
+//    	System.out.println();
     	List<String> myRouteList = new ArrayList<String>();
     	for(int i=0;i<resultList.size();i++)
     	{
