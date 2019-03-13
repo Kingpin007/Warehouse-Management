@@ -157,11 +157,13 @@ public class WarehouseService {
 		
 		for(Product product : products) {
 			Integer productKey = product.getProductName().hashCode();
+			Double productQuantity = product.getTotalQuantity();
 			ProductDO productDO = this.productRepository.findByProductKey(productKey);
-			while(!boxQueue.isEmpty()) {
+			while(!boxQueue.isEmpty() && productQuantity > 0) {
 				//While Queue is not empty
 				BoxDO boxDO = boxQueue.poll();
 				if(productDO.getHeight() <= boxDO.getHeight() && productDO.getWidth() <= boxDO.getWidth() && productDO.getLength() <= boxDO.getLength()) {
+					BoxDO box0 = boxDO.clone();
 					BoxDO box1 = boxDO.clone();//4,4,4
 					box1.setLength(box1.getLength() - productDO.getLength());//3,4,4
 					boxDO.setLength(boxDO.getLength() - box1.getLength());//1,4,4
@@ -170,7 +172,9 @@ public class WarehouseService {
 					boxDO.setWidth(boxDO.getWidth() - box2.getWidth());//1,2,4
 					BoxDO box3 = boxDO.clone();//1,2,4
 					box3.setHeight(box3.getHeight() - productDO.getHeight());//1,2,1
-					boxDO.setHeight(boxDO.getHeight() - box3.getHeight());//1,2,3 -> product in this box
+					boxDO.setHeight(box0.getHeight());
+					boxDO.setLength(box0.getLength());
+					boxDO.setWidth(box0.getWidth());
 					if(boxDO.getProducts() == null) {
 						Set<ProductDO> p = new HashSet<ProductDO>();
 						boxDO.setProducts(p);
@@ -181,12 +185,32 @@ public class WarehouseService {
 					boxQueue.add(box1);
 					boxQueue.add(box2);
 					boxQueue.add(box3);
-					boxes.add(boxDO);
-					break;
+					Boolean boxExists = false;
+					for(BoxDO boxDO2 : boxes) {
+						if(boxDO2.getBoxKey().equals(boxDO.getBoxKey())) {
+							boxExists = true;
+							Set<ProductDO> products1 = boxDO2.getProducts();
+							for(ProductDO productDO1 : products1) {
+								if(productDO1.getProductKey().equals(productDO.getProductKey())) {
+									productDO1.setTotalQuantity(productDO1.getTotalQuantity()+1);
+									break;
+								}
+							}
+							break;
+						}
+					}
+					if(boxExists == false)
+						boxes.add(boxDO);
+					productQuantity -= 1;
 				}
 			}
 		}
-		this.boxRepository.deleteAll(boxes);
+		try {
+			this.boxRepository.deleteAll(boxes);
+		}catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
 		return boxes;
 	}
 	
