@@ -207,7 +207,7 @@ public class Graph
     		myRouteList.add(
     				shelves.get(
     						resultList.get(i)).
-    							getShelfKey());
+    							getShelfName());
     	}
     	return myRouteList;
     }
